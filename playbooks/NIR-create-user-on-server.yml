@@ -1,0 +1,25 @@
+---
+- name: Add users
+  hosts: server
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  vars_files:
+   - NIR-users_data.yml
+
+  tasks:
+  - name: Ensure group students exists
+    group:
+      name: students
+      state: present
+
+  - name: Create user {{ item.username }} on server
+    user:
+      name: "{{ item.username }}"
+      state: present
+      password: "{{ item.password }}"
+      shell: /bin/bash
+      groups: students
+      append: yes
+    loop: "{{ users }}"

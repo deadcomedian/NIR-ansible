@@ -1,0 +1,14 @@
+[server]
+server ansible_host=10.51.2.119
+
+[stands]
+stand1 ansible_host=10.51.2.119
+stand2 ansible_host=10.51.2.119
+stand3 ansible_host=10.51.2.119
+stand4 ansible_host=10.51.2.119
+stand5 ansible_host=10.51.2.119
+stand6 ansible_host=10.51.2.119
+stand7 ansible_host=10.51.2.119
+stand8 ansible_host=10.51.2.119
+stand9 ansible_host=10.51.2.119
+stand10 ansible_host=10.51.2.119

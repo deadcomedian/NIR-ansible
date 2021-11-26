@@ -1,0 +1,26 @@
+---
+- name: Create users on stands
+  hosts: stands
+  remote_user: admin
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  var_files:
+    - NIR-users_data.yml
+
+  tasks:
+
+  - name: Delete user files of {{ item.username }} on stand {{ ansible_host }}
+    file:
+      path: /home/{{ item.username }}
+      state: absent
+    loop: "{{ users }}"
+    when: item.host == ansible_host
+
+  - name: Delete user {{ item.username }} on stand {{ ansible_host }}
+    user:
+      name: "{{ item.username }}"
+      state: absent
+    loop: "{{ users }}"
+    when: item.host == ansible_host

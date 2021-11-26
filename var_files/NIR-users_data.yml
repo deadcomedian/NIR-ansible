@@ -1,0 +1,4 @@
+---
+users:
+  - { username: testuser1, password: password, host: stand1 }
+  - { username: testuser2, password: password, host: stand2 }

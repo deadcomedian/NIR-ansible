@@ -1,0 +1,36 @@
+---
+- name: Create users on stands
+  hosts: stands
+  remote_user: admin
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  var_files:
+    - NIR-users_data.yml
+
+  tasks:
+
+  - name: Create user {{ item.username }} on stand {{ ansible_host }}
+    user:
+      name: "{{ item.username }}"
+      state: present
+      password: "{{ item.password }}"
+      shell: /bin/bash
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+      groups: sudo
+      append: yes
+    loop: "{{ users }}"
+    when: item.host == ansible_host
+
+  - name: Transfer public ssh-key of {{ item.username }} to server
+    synchronize:
+      src: /home/{{ item.username }}/.ssh/id_rsa.pub
+      dest: /home/{{item.username }}/.ssh/id_rsa.pub
+      mode: pull
+    delegate_to: server
+    loop: "{{ users }}"
+    when: item.host == ansible_host
+
